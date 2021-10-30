@@ -1,6 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Spotify } from '../../util/Spotify';
-import { selectSearchTerm } from '../SearchTerm/searchTermSlice';
 import { selectPlaylistTracks } from '../PlaylistTracks/playlistTracksSlice';
 
 export const loadSearchResultsFromSpotify = createAsyncThunk(
@@ -61,12 +59,15 @@ export const searchResultsTracksSlice = createSlice({
   },
 });
 
-export const {} = searchResultsTracksSlice.actions;
-export const selectSearchResultsTracks = (state) => state.searchResults;
+export const selectSearchResultsTracks = (state) =>
+  state.searchResultsTracks.searchResults;
 export const selectFilteredSearchResultsTracks = (state) => {
   const searchResultsTracks = selectSearchResultsTracks(state);
-  const playlistTracks = new Set(selectPlaylistTracks(state));
+  const playlistTracks = selectPlaylistTracks(state);
 
-  return searchResultsTracks.filter((track) => !playlistTracks.has(track));
+  return searchResultsTracks.filter(
+    (track) =>
+      !playlistTracks.find((playlistTrack) => playlistTrack.id === track.id)
+  );
 };
 export default searchResultsTracksSlice.reducer;

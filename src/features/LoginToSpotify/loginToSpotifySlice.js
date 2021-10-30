@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export const CLIENT_ID = '26779370bf7d48fc9cb8127014196126';
 export const REDIRECT_URI = 'http://localhost:3000/'; //'http://peanut-butter-and-jamming.surge.sh';
@@ -7,6 +7,7 @@ export const AUTHORIZE_URL = 'https://accounts.spotify.com/authorize';
 export const loginToSpotifySlice = createSlice({
   name: 'loginToSpotify',
   initialState: {
+    isLoggedIn: false,
     userAccessToken: '',
     accessTokenExpiration: '',
   },
@@ -38,8 +39,10 @@ export const loginToSpotifySlice = createSlice({
 });
 
 export const { getUserAccessToken } = loginToSpotifySlice.actions;
-export const selectUserAccessToken = (state) => state.userAccessToken;
+export const selectIsLoggedIn = (state) => state.loginToSpotify.isLoggedIn;
+export const selectUserAccessToken = (state) =>
+  state.loginToSpotify.userAccessToken;
 export const selectAccessTokenExpiration = (state) =>
-  state.accessTokenExpiration;
+  state.loginToSpotify.accessTokenExpiration;
 
 export default loginToSpotifySlice.reducer;

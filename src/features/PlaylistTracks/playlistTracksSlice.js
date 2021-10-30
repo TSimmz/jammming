@@ -67,9 +67,9 @@ export const playlistTracksSlice = createSlice({
       state.playlistTracks.push(action.payload);
     },
     removePlaylistTrack: (state, action) => {
-      return state.playlistTracks.filter((track) => {
-        track.id != action.payload.id;
-      });
+      return state.playlistTracks.filter(
+        (track) => track.id !== action.payload.id
+      );
     },
   },
   extraReducers: (builder) => {
@@ -92,5 +92,6 @@ export const playlistTracksSlice = createSlice({
 
 export const { addPlaylistTrack, removePlaylistTrack } =
   playlistTracksSlice.actions;
-export const selectPlaylistTracks = (state) => state.playlistTracks;
+export const selectPlaylistTracks = (state) =>
+  state.playlistTracks.playlistTracks;
 export default playlistTracksSlice.reducer;

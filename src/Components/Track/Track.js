@@ -1,42 +1,59 @@
 import React from 'react';
 import './Track.css';
+import {
+  addPlaylistTrack,
+  removePlaylistTrack,
+  selectPlaylistTracks,
+} from '../../features/PlaylistTracks/playlistTracksSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-export class Track extends React.Component {
-  constructor(props){
-    super(props);
-    
-    this.addTrack = this.addTrack.bind(this);
-    this.removeTrack = this.removeTrack.bind(this);
-    this.renderAction = this.renderAction.bind(this);
-  }
+const Track = ({ track, isRemoval }) => {
+  const dispatch = useDispatch();
+  const playlistTracks = useSelector(selectPlaylistTracks);
 
-  addTrack(){
-    this.props.onAdd(this.props.track);
-  }
+  const addTrack = () => {
+    const foundTrack = playlistTracks.find(
+      (savedTrack) => savedTrack.id === track.id
+    );
 
-  removeTrack() {
-    this.props.onRemove(this.props.track);
-  }
+    if (foundTrack) return;
 
-  renderAction() {
-    const { isRemoval } = this.props;
-    return ( 
-      <button className='Track-action' onClick={isRemoval ? this.removeTrack : this.addTrack}>
+    dispatch(addPlaylistTrack(track));
+  };
+
+  const removeTrack = () => {
+    const foundTrack = playlistTracks.find(
+      (savedTrack) => savedTrack.id === track.id
+    );
+
+    if (!foundTrack) {
+      return;
+    }
+
+    dispatch(removePlaylistTrack(track));
+  };
+
+  const renderAction = () => {
+    return (
+      <button
+        className='Track-action'
+        onClick={isRemoval ? removeTrack : addTrack}>
         {isRemoval ? '-' : '+'}
       </button>
     );
-  }
+  };
 
-  render () {
-    const { track } = this.props;
-    return (
-      <div className='Track'>
-        <div className='Track-information'>
-          <h3>{track.name}</h3>
-          <p>{track.artist} | {track.album}</p>
-        </div>
-        {this.renderAction()}
+  return (
+    <div className='Track'>
+      <div className='Track-information'>
+        <h3>{track.name}</h3>
+        <p>
+          {track.artist} | {track.album}
+        </p>
       </div>
-    );
-  }
-}
+      {renderAction()}
+    </div>
+  );
+};
+
+export default Track;

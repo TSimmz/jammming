@@ -1,35 +1,57 @@
 import React from 'react';
 import './SearchBar.css';
+import { selectUserAccessToken } from '../../features/LoginToSpotify/loginToSpotifySlice';
+import { setSearchTerm } from '../../features/SearchTerm/searchTermSlice';
+import { loadSearchResultsFromSpotify } from '../../features/SearchResultsTracks/searchResultsTracksSlice';
+import { connect, useDispatch, useSelector } from 'react-redux';
 
-export class SearchBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchTerm: '',
-    }
+const Searchbar = (props) => {
+  const dispatch = useDispatch();
+  const userAccessToken = useSelector(selectUserAccessToken);
 
-    this.handleTermChange = this.handleTermChange.bind(this);
-    this.search = this.search.bind(this);
-  }
+  const handleTermChange = () => {
+    dispatch(setSearchTerm(props.searchTerm));
+  };
 
-  handleTermChange(event) {
-    this.setState({
-      searchTerm: event.target.value,
-    });
-  }
-
-  search() {
-    this.props.onSearch(this.state.searchTerm);
-  }
-
-  render() {
-    return (
-      <div className='SearchBar'>
-        <input 
-          placeholder="Enter A Song, Album, or Artist"
-          onChange={this.handleTermChange}/>
-        <button className='SearchButton' onClick={this.search}>SEARCH</button>
-      </div>
+  const handleSearch = () => {
+    const searchTerm = props.searchTerm;
+    dispatch(
+      loadSearchResultsFromSpotify({
+        userAccessToken,
+        searchTerm,
+      })
     );
-  }
-}
+  };
+
+  return (
+    <div className='SearchBar'>
+      <input
+        value={props.searchTerm}
+        placeholder='Enter A Song, Album, or Artist'
+        onChange={handleTermChange}
+      />
+      <button className='SearchButton' onClick={handleSearch}>
+        SEARCH
+      </button>
+    </div>
+  );
+};
+
+const mapStateToProps = (state) => {
+  console.log('Searchterm', state.searchTerm);
+  return {
+    searchTerm: state.searchTerm,
+  };
+};
+
+export default connect(mapStateToProps)(Searchbar);
+
+// handleTermChange(event) {
+//   this.setState({
+//     searchTerm: event.target.value,
+//   });
+// }
+
+// search() {
+//   this.props.onSearch(this.state.searchTerm);
+// }
