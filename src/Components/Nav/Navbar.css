@@ -1,0 +1,37 @@
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #010c3f;
+  padding: 0.2rem 2rem;
+}
+
+h1 {
+  padding: 0.77rem 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.88rem;
+  color: #fff;
+}
+
+h1 .highlight {
+  color: #6c41ec;
+}
+
+.sign-in {
+  cursor: pointer;
+  width: 8.11rem;
+  padding: 0.77rem 0;
+  border-radius: 54px;
+  background-color: #6c41ec;
+  text-align: center;
+  font-size: 0.833rem;
+  transition: background-color 0.25s;
+  border: 0px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.sign-in:hover {
+  background-color: rgba(108, 65, 233, 0.7);
+}
