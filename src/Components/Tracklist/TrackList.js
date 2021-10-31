@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import Track from '../Track/Track.js';
 import './TrackList.css';
 import { selectPlaylistTracks } from '../../features/PlaylistTracks/playlistTracksSlice.js';
-import {
-  selectSearchResultsTracks,
-  selectFilteredSearchResultsTracks,
-} from '../../features/SearchResultsTracks/searchResultsTracksSlice.js';
+import { selectFilteredSearchResultsTracks } from '../../features/SearchResultsTracks/searchResultsTracksSlice.js';
 
 const Tracklist = (props) => {
   return (
