@@ -4,8 +4,14 @@ import {
   selectIsLoggedIn,
   selectUserAccessToken,
 } from '../../features/LoginToSpotify/loginToSpotifySlice';
-import { setSearchTerm } from '../../features/SearchTerm/searchTermSlice';
-import { loadSearchResultsFromSpotify } from '../../features/SearchResultsTracks/searchResultsTracksSlice';
+import {
+  clearSearchTerm,
+  setSearchTerm,
+} from '../../features/SearchTerm/searchTermSlice';
+import {
+  clearSearchResults,
+  loadSearchResultsFromSpotify,
+} from '../../features/SearchResultsTracks/searchResultsTracksSlice';
 import { connect, useSelector } from 'react-redux';
 
 const Searchbar = (props) => {
@@ -17,23 +23,30 @@ const Searchbar = (props) => {
   };
 
   const handleSearch = () => {
-    console.log(props.searchTerm);
-    const searchTerm = props.searchTerm;
     if (props.searchTerm !== '' && isLoggedIn) {
-      props.search({ userAccessToken, searchTerm });
+      props.search(userAccessToken, props.searchTerm);
     }
   };
 
+  const handleClear = () => {
+    props.clearSearch();
+  };
+
   return (
-    <div className='SearchBar'>
+    <div className='search-bar'>
       <input
         value={props.searchTerm}
         placeholder='Enter A Song, Album, or Artist'
         onChange={handleTermChange}
       />
-      <button className='SearchButton' onClick={handleSearch}>
-        SEARCH
-      </button>
+      <div className='buttons-container'>
+        <button className='button' onClick={handleSearch}>
+          SEARCH
+        </button>
+        <button className='button' onClick={handleClear}>
+          CLEAR
+        </button>
+      </div>
     </div>
   );
 };
@@ -48,18 +61,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateTerm: (searchTerm) => dispatch(setSearchTerm(searchTerm)),
     search: (userAccessToken, searchTerm) =>
-      dispatch(loadSearchResultsFromSpotify(userAccessToken, searchTerm)),
+      dispatch(loadSearchResultsFromSpotify({ userAccessToken, searchTerm })),
+    clearSearch: () => {
+      dispatch(clearSearchTerm());
+      dispatch(clearSearchResults());
+    },
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Searchbar);
-
-// handleTermChange(event) {
-//   this.setState({
-//     searchTerm: event.target.value,
-//   });
-// }
-
-// search() {
-//   this.props.onSearch(this.state.searchTerm);
-// }

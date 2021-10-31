@@ -41,7 +41,11 @@ export const searchResultsTracksSlice = createSlice({
     isLoadingResults: false,
     hasLoadingError: false,
   },
-  reducers: {},
+  reducers: {
+    clearSearchResults: (state, action) => {
+      state.searchResults = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loadSearchResultsFromSpotify.pending, (state, action) => {
@@ -59,6 +63,8 @@ export const searchResultsTracksSlice = createSlice({
       });
   },
 });
+
+export const { clearSearchResults } = searchResultsTracksSlice.actions;
 
 export const selectSearchResultsTracks = (state) =>
   state.searchResultsTracks.searchResults;
