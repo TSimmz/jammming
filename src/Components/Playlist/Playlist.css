@@ -1,4 +1,4 @@
-.Playlist {
+.playlist {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,7 +10,7 @@
   box-shadow: 0 4px 2px 2px #000000;
 }
 
-.Playlist input {
+.playlist input {
   width: 100%;
   border: 0;
   outline: 0;
@@ -21,32 +21,40 @@
   color: #fff;
 }
 
-.Playlist-save {
+.playlist-save {
   cursor: pointer;
   width: 10rem;
-  padding: .77rem 0;
+  padding: 0.77rem 0;
   border-radius: 54px;
   border-width: 0px;
   margin-top: 1.27rem;
   background-color: #6c41ec;
   text-align: center;
-  font-size: .83rem;
-  transition: background-color .25s;
+  font-size: 0.83rem;
+  transition: background-color 0.25s;
   color: #fff;
   font-weight: 500;
 }
 
-.Playlist-save:hover {
-  background-color: rgba(108, 65, 233, .7);
+.playlist-save:hover {
+  background-color: rgba(108, 65, 233, 0.7);
+}
+
+.saving {
+  width: 100%;
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 ::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
+  width: 0px;
+  background: transparent;
 }
 
 @media only screen and (max-width: 1020px) {
-  .Playlist {
+  .playlist {
     width: 90%;
   }
 }

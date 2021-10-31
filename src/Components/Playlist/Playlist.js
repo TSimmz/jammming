@@ -9,6 +9,14 @@ import {
 import TrackList from '../Tracklist/TrackList.js';
 import './Playlist.css';
 
+const Saving = () => {
+  return (
+    <div className='saving'>
+      <p>Saving Playist to Spotify...</p>
+    </div>
+  );
+};
+
 const Playlist = (props) => {
   const playlistTracks = useSelector(selectPlaylistTracks);
   const userAccessToken = useSelector(selectUserAccessToken);
@@ -29,14 +37,14 @@ const Playlist = (props) => {
   };
 
   return (
-    <div className='Playlist'>
+    <div className='playlist'>
       <input
         value={props.playlistName}
         placeholder='Enter Playlist Name'
         onChange={handleNameChange}
       />
-      <TrackList playlist />
-      <button className='Playlist-save' onClick={handlePlaylistSave}>
+      {props.isSavingPlaylist ? <Saving /> : <TrackList playlist />}
+      <button className='playlist-save' onClick={handlePlaylistSave}>
         SAVE TO SPOTIFY
       </button>
     </div>
@@ -46,6 +54,7 @@ const Playlist = (props) => {
 const mapStateToProps = (state) => {
   return {
     playlistName: state.playlistName,
+    isSavingPlaylist: state.playlistTracks.isSavingPlaylist,
   };
 };
 
