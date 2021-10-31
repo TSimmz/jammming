@@ -1,16 +1,34 @@
 import React from 'react';
-import { Track } from '../Track/Track.js';
-import './TrackList.css'
+import { connect } from 'react-redux';
+import Track from '../Track/Track.js';
+import './TrackList.css';
+import { selectPlaylistTracks } from '../../features/PlaylistTracks/playlistTracksSlice.js';
+import { selectSearchResultsTracks } from '../../features/SearchResultsTracks/searchResultsTracksSlice.js';
 
-export class TrackList extends React.Component {
-  render() {
-    const tracks = this.props.tracks;
-    return (
-      <div className='TrackList'>
-        {tracks.map(track => {
-          return <Track key={track.id} track={track} onAdd={this.props.onAdd} onRemove={this.props.onRemove} isRemoval={this.props.isRemoval}/>
-        })}
-      </div>
-    );
-  }
-}
+const Tracklist = (props) => {
+  return (
+    <div className='TrackList'>
+      {props.tracks.map((track) => {
+        return (
+          <Track key={track.id} track={track} isRemoval={props.isRemoval} />
+        );
+      })}
+    </div>
+  );
+};
+
+const mapStateToProps = (state, ownProps) => {
+  let tracks = ownProps.playlist
+    ? selectPlaylistTracks(state)
+    : selectSearchResultsTracks(state);
+
+  if (!tracks) tracks = [];
+
+  const isRemoval = ownProps.playlist ? true : false;
+  return {
+    tracks: tracks,
+    isRemoval: isRemoval,
+  };
+};
+
+export default connect(mapStateToProps)(Tracklist);

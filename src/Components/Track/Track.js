@@ -1,42 +1,75 @@
 import React from 'react';
 import './Track.css';
+import {
+  addPlaylistTrack,
+  removePlaylistTrack,
+} from '../../features/PlaylistTracks/playlistTracksSlice';
+import { connect } from 'react-redux';
 
-export class Track extends React.Component {
-  constructor(props){
-    super(props);
-    
-    this.addTrack = this.addTrack.bind(this);
-    this.removeTrack = this.removeTrack.bind(this);
-    this.renderAction = this.renderAction.bind(this);
-  }
+const Track = (props) => {
+  const {
+    track,
+    isRemoval,
+    playlistTracks,
+    addTrackToPlaylist,
+    removeTrackFromPlaylist,
+  } = props;
 
-  addTrack(){
-    this.props.onAdd(this.props.track);
-  }
+  const addTrack = () => {
+    const foundTrack =
+      Array.isArray(playlistTracks) &&
+      playlistTracks.find((savedTrack) => savedTrack.id === track.id);
 
-  removeTrack() {
-    this.props.onRemove(this.props.track);
-  }
+    if (foundTrack) return;
+    addTrackToPlaylist(track);
+  };
 
-  renderAction() {
-    const { isRemoval } = this.props;
-    return ( 
-      <button className='Track-action' onClick={isRemoval ? this.removeTrack : this.addTrack}>
+  const removeTrack = () => {
+    const foundTrack = playlistTracks.find(
+      (savedTrack) => savedTrack.id === track.id
+    );
+
+    if (!foundTrack) {
+      return;
+    }
+
+    removeTrackFromPlaylist(track);
+  };
+
+  const renderAction = () => {
+    return (
+      <button
+        className='Track-action'
+        onClick={isRemoval ? removeTrack : addTrack}>
         {isRemoval ? '-' : '+'}
       </button>
     );
-  }
+  };
 
-  render () {
-    const { track } = this.props;
-    return (
-      <div className='Track'>
-        <div className='Track-information'>
-          <h3>{track.name}</h3>
-          <p>{track.artist} | {track.album}</p>
-        </div>
-        {this.renderAction()}
+  return (
+    <div className='Track'>
+      <div className='Track-information'>
+        <h3>{track.name}</h3>
+        <p>
+          {track.artist} | {track.album}
+        </p>
       </div>
-    );
-  }
-}
+      {renderAction()}
+    </div>
+  );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    playlistTracks: state.playlistTracks.playlistTracks,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addTrackToPlaylist: (track) => dispatch(addPlaylistTrack(track)),
+    removeTrackFromPlaylist: (track) => dispatch(removePlaylistTrack(track)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Track);

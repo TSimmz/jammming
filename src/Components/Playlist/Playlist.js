@@ -1,28 +1,63 @@
 import React from 'react';
-import { TrackList } from '../Tracklist/TrackList.js';
+import { connect, useSelector } from 'react-redux';
+import { selectUserAccessToken } from '../../features/LoginToSpotify/loginToSpotifySlice.js';
+import { setPlaylistName } from '../../features/PlaylistName/playlistNameSlice.js';
+import {
+  savePlaylistToSpotify,
+  selectPlaylistTracks,
+} from '../../features/PlaylistTracks/playlistTracksSlice.js';
+import TrackList from '../Tracklist/TrackList.js';
 import './Playlist.css';
 
-export class Playlist extends React.Component {
-  constructor(props){
-    super(props);
+const Playlist = (props) => {
+  const playlistTracks = useSelector(selectPlaylistTracks);
+  const userAccessToken = useSelector(selectUserAccessToken);
 
-    this.handleNameChange = this.handleNameChange.bind(this);
-  }
+  const handleNameChange = (e) => {
+    props.updatePlaylistName(e.target.value);
+  };
 
-  handleNameChange(event){
-    this.props.onNameChange(event.target.value);
-  }
+  const handlePlaylistSave = () => {
+    const playlistName = props.playlistName;
 
-  render() {
-    return (
-      <div className='Playlist'>
-        <input value={this.props.playlistName} onChange={this.handleNameChange}/>
-        <TrackList 
-          tracks={this.props.playlistTracks} 
-          onRemove={this.props.onRemove} 
-          isRemoval={true}/>
-        <button className='Playlist-save' onClick={this.props.onSave}>SAVE TO SPOTIFY</button>
-      </div>
-    );
-  }
-}
+    let trackUriList = [];
+    playlistTracks.forEach((track) => trackUriList.push(track.uri));
+
+    if (playlistName && trackUriList.length !== 0) {
+      props.savePlaylist(userAccessToken, playlistName, trackUriList);
+    }
+  };
+
+  return (
+    <div className='Playlist'>
+      <input
+        value={props.playlistName}
+        placeholder='Enter Playlist Name'
+        onChange={handleNameChange}
+      />
+      <TrackList playlist />
+      <button className='Playlist-save' onClick={handlePlaylistSave}>
+        SAVE TO SPOTIFY
+      </button>
+    </div>
+  );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    playlistName: state.playlistName,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updatePlaylistName: (playlistName) =>
+      dispatch(setPlaylistName(playlistName)),
+    savePlaylist: (userAccessToken, playlistName, trackUriList) =>
+      dispatch(
+        savePlaylistToSpotify({ userAccessToken, playlistName, trackUriList })
+      ),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Playlist);
