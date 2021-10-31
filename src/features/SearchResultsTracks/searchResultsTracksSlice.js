@@ -67,13 +67,14 @@ export const selectFilteredSearchResultsTracks = (state) => {
   const searchResultsTracks = selectSearchResultsTracks(state);
   const playlistTracks = selectPlaylistTracks(state);
 
-  return (
-    searchResultsTracks &&
-    searchResultsTracks.filter(
+  if (searchResultsTracks.length === 0) {
+    return searchResultsTracks;
+  } else {
+    return searchResultsTracks.filter(
       (track) =>
         !playlistTracks.find((playlistTrack) => playlistTrack.id === track.id)
-    )
-  );
+    );
+  }
 };
 
 export default searchResultsTracksSlice.reducer;

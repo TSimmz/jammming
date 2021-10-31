@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import Track from '../Track/Track.js';
 import './TrackList.css';
 import { selectPlaylistTracks } from '../../features/PlaylistTracks/playlistTracksSlice.js';
-import { selectSearchResultsTracks } from '../../features/SearchResultsTracks/searchResultsTracksSlice.js';
+import {
+  selectSearchResultsTracks,
+  selectFilteredSearchResultsTracks,
+} from '../../features/SearchResultsTracks/searchResultsTracksSlice.js';
 
 const Tracklist = (props) => {
   return (
@@ -20,7 +23,7 @@ const Tracklist = (props) => {
 const mapStateToProps = (state, ownProps) => {
   let tracks = ownProps.playlist
     ? selectPlaylistTracks(state)
-    : selectSearchResultsTracks(state);
+    : selectFilteredSearchResultsTracks(state);
 
   if (!tracks) tracks = [];
 
