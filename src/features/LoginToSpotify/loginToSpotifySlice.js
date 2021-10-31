@@ -1,17 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-export const CLIENT_ID = '26779370bf7d48fc9cb8127014196126';
-export const REDIRECT_URI = 'http://localhost:3000/'; //'http://peanut-butter-and-jamming.surge.sh';
-export const AUTHORIZE_URL = 'https://accounts.spotify.com/authorize';
+import Spotify from '../../util/Spotify';
 
 export const loginToSpotifySlice = createSlice({
   name: 'loginToSpotify',
   initialState: {
     isLoggedIn: false,
     userAccessToken: '',
-    accessTokenExpiration: '',
+    accessTokenExpiration: 0,
   },
   reducers: {
+    updateLoginState: (state, action) => {
+      state.isLoggedIn = action.payload;
+    },
+    updateUserAccessToken: (state, action) => {
+      state.userAccessToken = action.payload;
+    },
+    updateAccessTokenExpiration: (state, action) => {
+      state.accessTokenExpiration = action.payload;
+    },
     getUserAccessToken: (state, action) => {
       if (state.userAccessToken !== '') return state.userAccessToken;
 
@@ -32,13 +38,19 @@ export const loginToSpotifySlice = createSlice({
 
         return state.userAccessToken;
       } else {
-        window.location = `${AUTHORIZE_URL}?client_id=${CLIENT_ID}&response_type=token&scope=playlist-modify-public&redirect_uri=${REDIRECT_URI}`;
+        console.log('Attempting to authorize...');
+        window.location = `${Spotify.AUTHORIZE_URL}?client_id=${Spotify.CLIENT_ID}&response_type=token&scope=playlist-modify-public&redirect_uri=${Spotify.REDIRECT_URI}`;
       }
     },
   },
 });
 
-export const { getUserAccessToken } = loginToSpotifySlice.actions;
+export const {
+  updateLoginState,
+  updateUserAccessToken,
+  updateAccessTokenExpiration,
+  getUserAccessToken,
+} = loginToSpotifySlice.actions;
 export const selectIsLoggedIn = (state) => state.loginToSpotify.isLoggedIn;
 export const selectUserAccessToken = (state) =>
   state.loginToSpotify.userAccessToken;

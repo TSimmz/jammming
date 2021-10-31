@@ -3,22 +3,25 @@ import './Track.css';
 import {
   addPlaylistTrack,
   removePlaylistTrack,
-  selectPlaylistTracks,
 } from '../../features/PlaylistTracks/playlistTracksSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
-const Track = ({ track, isRemoval }) => {
-  const dispatch = useDispatch();
-  const playlistTracks = useSelector(selectPlaylistTracks);
+const Track = (props) => {
+  const {
+    track,
+    isRemoval,
+    playlistTracks,
+    addTrackToPlaylist,
+    removeTrackFromPlaylist,
+  } = props;
 
   const addTrack = () => {
-    const foundTrack = playlistTracks.find(
-      (savedTrack) => savedTrack.id === track.id
-    );
+    const foundTrack =
+      Array.isArray(playlistTracks) &&
+      playlistTracks.find((savedTrack) => savedTrack.id === track.id);
 
     if (foundTrack) return;
-
-    dispatch(addPlaylistTrack(track));
+    addTrackToPlaylist(track);
   };
 
   const removeTrack = () => {
@@ -30,7 +33,7 @@ const Track = ({ track, isRemoval }) => {
       return;
     }
 
-    dispatch(removePlaylistTrack(track));
+    removeTrackFromPlaylist(track);
   };
 
   const renderAction = () => {
@@ -56,4 +59,17 @@ const Track = ({ track, isRemoval }) => {
   );
 };
 
-export default Track;
+const mapStateToProps = (state) => {
+  return {
+    playlistTracks: state.playlistTracks.playlistTracks,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addTrackToPlaylist: (track) => dispatch(addPlaylistTrack(track)),
+    removeTrackFromPlaylist: (track) => dispatch(removePlaylistTrack(track)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Track);

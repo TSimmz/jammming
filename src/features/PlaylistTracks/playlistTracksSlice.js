@@ -67,7 +67,7 @@ export const playlistTracksSlice = createSlice({
       state.playlistTracks.push(action.payload);
     },
     removePlaylistTrack: (state, action) => {
-      return state.playlistTracks.filter(
+      state.playlistTracks = state.playlistTracks.filter(
         (track) => track.id !== action.payload.id
       );
     },

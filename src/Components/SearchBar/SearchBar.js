@@ -17,10 +17,10 @@ const Searchbar = (props) => {
   };
 
   const handleSearch = () => {
+    console.log(props.searchTerm);
     const searchTerm = props.searchTerm;
-
-    if (searchTerm !== '' && isLoggedIn) {
-      props.search(userAccessToken, searchTerm);
+    if (props.searchTerm !== '' && isLoggedIn) {
+      props.search({ userAccessToken, searchTerm });
     }
   };
 

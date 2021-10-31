@@ -20,11 +20,11 @@ const Playlist = (props) => {
   const handlePlaylistSave = () => {
     const playlistName = props.playlistName;
 
-    let trackURIs = [];
-    playlistTracks.forEach((track) => trackURIs.push(track.uri));
+    let trackUriList = [];
+    playlistTracks.forEach((track) => trackUriList.push(track.uri));
 
-    if (trackURIs.length !== 0) {
-      props.savePlaylist(userAccessToken, playlistName, trackURIs);
+    if (playlistName && trackUriList.length !== 0) {
+      props.savePlaylist(userAccessToken, playlistName, trackUriList);
     }
   };
 
@@ -53,8 +53,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updatePlaylistName: (playlistName) =>
       dispatch(setPlaylistName(playlistName)),
-    savePlaylist: (userAccessToken, playlistName, trackURIs) =>
-      dispatch(savePlaylistToSpotify(userAccessToken, playlistName, trackURIs)),
+    savePlaylist: (userAccessToken, playlistName, trackUriList) =>
+      dispatch(
+        savePlaylistToSpotify({ userAccessToken, playlistName, trackUriList })
+      ),
   };
 };
 

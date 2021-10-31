@@ -5,6 +5,7 @@ export const loadSearchResultsFromSpotify = createAsyncThunk(
   'searchResults/getSearchResults',
   async ({ userAccessToken, searchTerm }) => {
     const urlToFetch = `https://api.spotify.com/v1/search?type=track&q=${searchTerm}`;
+    console.log('FETCH URL: ', urlToFetch);
     try {
       const response = await fetch(urlToFetch, {
         headers: {
@@ -61,13 +62,18 @@ export const searchResultsTracksSlice = createSlice({
 
 export const selectSearchResultsTracks = (state) =>
   state.searchResultsTracks.searchResults;
+
 export const selectFilteredSearchResultsTracks = (state) => {
   const searchResultsTracks = selectSearchResultsTracks(state);
   const playlistTracks = selectPlaylistTracks(state);
 
-  return searchResultsTracks.filter(
-    (track) =>
-      !playlistTracks.find((playlistTrack) => playlistTrack.id === track.id)
+  return (
+    searchResultsTracks &&
+    searchResultsTracks.filter(
+      (track) =>
+        !playlistTracks.find((playlistTrack) => playlistTrack.id === track.id)
+    )
   );
 };
+
 export default searchResultsTracksSlice.reducer;

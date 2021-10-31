@@ -3,22 +3,26 @@ import { connect } from 'react-redux';
 import Track from '../Track/Track.js';
 import './TrackList.css';
 import { selectPlaylistTracks } from '../../features/PlaylistTracks/playlistTracksSlice.js';
-import { selectFilteredSearchResultsTracks } from '../../features/SearchResultsTracks/searchResultsTracksSlice.js';
+import { selectSearchResultsTracks } from '../../features/SearchResultsTracks/searchResultsTracksSlice.js';
 
-const Tracklist = ({ tracks, isRemoval }) => {
+const Tracklist = (props) => {
   return (
     <div className='TrackList'>
-      {tracks.map((track) => {
-        return <Track key={track.id} track={track} isRemoval={isRemoval} />;
+      {props.tracks.map((track) => {
+        return (
+          <Track key={track.id} track={track} isRemoval={props.isRemoval} />
+        );
       })}
     </div>
   );
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const tracks = ownProps.playlist
+  let tracks = ownProps.playlist
     ? selectPlaylistTracks(state)
-    : selectFilteredSearchResultsTracks(state);
+    : selectSearchResultsTracks(state);
+
+  if (!tracks) tracks = [];
 
   const isRemoval = ownProps.playlist ? true : false;
   return {
