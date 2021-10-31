@@ -1,26 +1,27 @@
 import React from 'react';
 import './SearchBar.css';
-import { selectUserAccessToken } from '../../features/LoginToSpotify/loginToSpotifySlice';
+import {
+  selectIsLoggedIn,
+  selectUserAccessToken,
+} from '../../features/LoginToSpotify/loginToSpotifySlice';
 import { setSearchTerm } from '../../features/SearchTerm/searchTermSlice';
 import { loadSearchResultsFromSpotify } from '../../features/SearchResultsTracks/searchResultsTracksSlice';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 const Searchbar = (props) => {
-  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const userAccessToken = useSelector(selectUserAccessToken);
 
-  const handleTermChange = () => {
-    dispatch(setSearchTerm(props.searchTerm));
+  const handleTermChange = (e) => {
+    props.updateTerm(e.target.value);
   };
 
   const handleSearch = () => {
     const searchTerm = props.searchTerm;
-    dispatch(
-      loadSearchResultsFromSpotify({
-        userAccessToken,
-        searchTerm,
-      })
-    );
+
+    if (searchTerm !== '' && isLoggedIn) {
+      props.search(userAccessToken, searchTerm);
+    }
   };
 
   return (
@@ -38,13 +39,20 @@ const Searchbar = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log('Searchterm', state.searchTerm);
   return {
     searchTerm: state.searchTerm,
   };
 };
 
-export default connect(mapStateToProps)(Searchbar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateTerm: (searchTerm) => dispatch(setSearchTerm(searchTerm)),
+    search: (userAccessToken, searchTerm) =>
+      dispatch(loadSearchResultsFromSpotify(userAccessToken, searchTerm)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Searchbar);
 
 // handleTermChange(event) {
 //   this.setState({
