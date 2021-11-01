@@ -25,7 +25,7 @@ View it at [Peanut-butter-and-jammming.surge.sh](http://peanut-butter-and-jammmi
 
 ## Contributing
 
-Do you see any errors? Want to add your own functionality or switch up the prompt api?
+Do you see any errors? Want to add your own functionality or use some new API endpoints?
 
 #### Steps
 
