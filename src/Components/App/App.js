@@ -9,9 +9,9 @@ const App = () => {
   return (
     <>
       <Navbar />
-      <div className='App'>
+      <div className='app'>
         <SearchBar />
-        <div className='App-playlist'>
+        <div className='app-playlist'>
           <SearchResults />
           <Playlist />
         </div>

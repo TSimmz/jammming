@@ -9,7 +9,7 @@ html {
 }
 
 h1 {
-  padding: .77rem 0;
+  padding: 0.77rem 0;
   background-color: #010c3f;
   text-align: center;
   font-family: 'Poppins', sans-serif;
@@ -26,26 +26,25 @@ h2 {
   font-size: 1.55rem;
 }
 
-.App {
-  height: 100%;
+.app {
   padding: 0 17% 10% 17%;
   background-image: url('./background_photo_desktop.jpg');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   font-family: 'Work Sans', sans-serif;
   font-weight: 500;
   color: #fff;
 }
 
-.App-playlist {
+.app-playlist {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
 @media only screen and (max-width: 1020px) {
-  .App-playlist {
+  .app-playlist {
     align-items: center;
     flex-direction: column;
   }

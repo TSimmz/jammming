@@ -39,7 +39,7 @@ const Track = (props) => {
   const renderAction = () => {
     return (
       <button
-        className='Track-action'
+        className='track-action'
         onClick={isRemoval ? removeTrack : addTrack}>
         {isRemoval ? '-' : '+'}
       </button>
@@ -47,8 +47,8 @@ const Track = (props) => {
   };
 
   return (
-    <div className='Track'>
-      <div className='Track-information'>
+    <div className='track'>
+      <div className='track-information'>
         <h3>{track.name}</h3>
         <p>
           {track.artist} | {track.album}
