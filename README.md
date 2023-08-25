@@ -2,7 +2,7 @@
 Jammming is a simple React app bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Using the Spotify API, it allows the user to login to Spotify, search for songs, and create new playlists. The playlists are saved to the users Spotify account.
 
 ## View the website
-[peanut-butter-and-jammming.surge.sh](http://peanut-butter-and-jammming.surge.sh/).
+[peanut-butter-and-jammming.surge.sh](http://peanut-butter-and-jammming.surge.sh/)
 
 ## Preview
 ![Gameplay](https://media.giphy.com/media/QmCEcj11tJc6jiUX37/giphy.gif)
