@@ -24,7 +24,7 @@ npm start
 5. Submit a pull request :D
 
 ## Credits
-* [TSimmz](https://github.com/tsimmz)
+[TSimmz](https://github.com/tsimmz)
 
 ## Contributing
 Do you see any errors? Want to add your own functionality or use some new API endpoints?
